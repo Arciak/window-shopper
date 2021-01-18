@@ -12,6 +12,8 @@ class MainVC: UIViewController {
 
     @IBOutlet weak var wageTxt: CurrencyTxtField!
     @IBOutlet weak var priceTxt: CurrencyTxtField!
+    @IBOutlet weak var resultLbl: UILabel!
+    @IBOutlet weak var hoursLbl: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         // robimy UIButton w kodzie aby wyswietlał się przycisk nad klawiatura w apliakcji
@@ -25,11 +27,30 @@ class MainVC: UIViewController {
         wageTxt.inputAccessoryView = calcBtn
         priceTxt.inputAccessoryView = calcBtn
         
+        resultLbl.isHidden = true
+        hoursLbl.isHidden = true
+        
     }
     
     // kiedy nacisniemy kalkulator chcemy aby ta funckja zostala wywolana
     @objc func calculate() {
-        print("We  got here")
+        //pierwszy if upwniamy sie ze nie jest pusty
+        if let wageTxt = wageTxt.text, let priceTxt = priceTxt.text { // tutaj uzywamy takich samych nazw wageTxt oraz priceTxt jak nazwy Txt Field ale traktowane już sa jako parametry
+            if let wage = Double(wageTxt), let price = Double(priceTxt) {
+                view.endEditing(true)
+                resultLbl.isHidden = false
+                hoursLbl.isHidden = false
+                resultLbl.text = "\(Wage.getHours(forWage: wage, andPrice: price))"
+            }
+            
+        }
+    }
+    
+    @IBAction func clearCalculatorPressed(_ sender: Any) {
+        resultLbl.isHidden = true
+        hoursLbl.isHidden = true
+        wageTxt.text = ""
+        priceTxt.text = ""
     }
 }
 
